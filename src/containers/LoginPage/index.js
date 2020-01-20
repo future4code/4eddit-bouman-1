@@ -1,10 +1,11 @@
 import React, { Component } from "react";
+import { MyButton } from "../../style/style"
 
 class LoginPage extends Component {
   render() {
     return (
       <div>
-        Oie
+        <MyButton>AAAAA</MyButton>
       </div>
     );
   }

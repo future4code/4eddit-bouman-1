@@ -4,6 +4,7 @@ import { Switch, Route } from "react-router-dom";
 import LoginPage from "../LoginPage";
 import SignUpPage from "../SignUpPage"
 import FeedPage from "../FeedPage";
+import PostPage from '../PostPage'
 
 
 

@@ -8,7 +8,7 @@ import PostPage from '../PostPage'
 
 
 
-const routes = {
+export const routes = {
   root: "/",
   signUp: "/signup",
   feed: "/feed"

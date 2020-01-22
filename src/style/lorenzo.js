@@ -8,7 +8,7 @@ export const Container = styled.main`
   font-family: 'Muli', sans-serif;
   margin: auto;
   width: 80vw;
-  height: 100vh;
+  // height: 100vh;
   display: flex;
   flex-direction: column;
   &#signup {
@@ -102,7 +102,7 @@ export const ReactionBox = styled.div`
   margin: auto;
   align-self: center;
   width: 80%;
-  padding: 2vh 1vw;
+  padding: 0.01vh 1vw;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
 `

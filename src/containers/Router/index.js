@@ -7,7 +7,7 @@ import FeedPage from "../FeedPage";
 
 
 
-const routes = {
+export const routes = {
   root: "/",
   signUp: "/signup",
   feed: "/feed"

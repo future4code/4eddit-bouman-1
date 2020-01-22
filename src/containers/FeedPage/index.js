@@ -7,16 +7,6 @@ class FeedPage extends Component {
     form: {},
   }
 
-  componentDidMount() {
-    const token = window.localStorage.getItem("token")
-
-    if (token === null) {
-      this.props.goToLoginPage()
-    }
-
-    this.props.getPosts()
-  }
-
   render() {
     return (
       <LightBackground>
@@ -47,11 +37,5 @@ class FeedPage extends Component {
   }
 }
 
-const mapStateToProps = state => ({
-})
 
-
-const mapDispatchToProps = dispatch => ({
-})
-
-export default connect(mapStateToProps, mapDispatchToProps)(FeedPage);
+export default FeedPage

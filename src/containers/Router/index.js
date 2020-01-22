@@ -5,13 +5,13 @@ import LoginPage from "../LoginPage";
 import SignUpPage from "../SignUpPage"
 import FeedPage from "../FeedPage";
 import PostPage from '../PostPage'
+import { PrivateRoute } from "./PrivateRoute"
 
-
-
-const routes = {
-  root: "/",
+export const routes = {
+  login: "/",
   signUp: "/signup",
-  feed: "/feed"
+  feed: "/feed",
+  post: '/post',
   // Outras rotas aqui
 };
 
@@ -19,9 +19,10 @@ function Router(props) {
   return (
     <ConnectedRouter history={props.history}>
       <Switch>
-        <Route exact path={routes.root} component={LoginPage} />
+        <Route exact path={routes.login} component={LoginPage} />
         <Route exact path={routes.signUp} component={SignUpPage} />
-        <Route exact path={routes.feed} component={FeedPage} />
+        <PrivateRoute exact path={routes.feed} component={FeedPage} />
+        <Route exact path={routes.post} component={PostPage} />
       </Switch>
     </ConnectedRouter>
   );

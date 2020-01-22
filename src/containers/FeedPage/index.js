@@ -10,14 +10,6 @@ class FeedPage extends Component {
     form: {},
   }
 
-  componentDidMount() {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlphR1dLRWRjZXlaWjlORkxPUGgxIiwiZW1haWwiOiJwZWRyby5kYXJ2YXNAZ21haWwuY29tIiwidXNlcm5hbWUiOiJkYXJ2YXMiLCJpYXQiOjE1NzM1Nzk5MTd9.sKiIIRgiQm2qesnrNmFujNlXF02ytx-IvLKnNFHqXgA"
-    if (token === null) {
-      this.props.goToLoginPage()
-    } else {
-      this.props.getPosts()
-    }
-  }
 
   render() {
     return (
@@ -60,4 +52,4 @@ const mapDispatchToProps = dispatch => ({
   getPosts: () => dispatch(getPosts()),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps)(FeedPage);
+export default FeedPage

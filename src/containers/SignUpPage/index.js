@@ -1,6 +1,10 @@
 import React, { Component } from "react";
+import { connect } from "react-redux";
+import { push } from "connected-react-router";
+import { routes } from "../Router";
 import { Container, Box, Input, LightButton, Image } from "../../style/lorenzo"
 import { SignUpForm } from "./signUpForm"
+import { signUp } from "../../actions/lorenzo"
 
 class SignUpPage extends Component {
   state = {
@@ -14,6 +18,9 @@ class SignUpPage extends Component {
 
   handleOnSubmit = ev => {
     ev.preventDefault();
+    const { username, email, password } = this.state.form
+    this.props.signUp(username, email, password)
+    this.setState({ [password]: "" })
   };
 
   render() {
@@ -50,4 +57,8 @@ class SignUpPage extends Component {
   }
 }
 
-export default SignUpPage;
+const mapDispatchToProps = dispatch => ({
+  signUp: (username, email, password) => dispatch(signUp(username, email, password))
+})
+
+export default connect(null, mapDispatchToProps)(SignUpPage);

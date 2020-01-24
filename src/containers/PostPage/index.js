@@ -3,7 +3,7 @@ import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { routes } from "../Router";
 import { PostContainer, PostCard, UserNameBox, UserName, Text, BottonField, CountVote, CountComment, ButtonLight, TextAreaComment } from '../../style/PostPage'
-import { getPostDetails } from "../../actions/lorenzo"
+import { getPostDetails, createComment } from "../../actions/lorenzo"
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
@@ -11,6 +11,12 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { putVoteDirection } from '../../actions/vote'
 
 class PostPage extends Component {
+    constructor(props) {
+        super(props)
+        this.state = {
+            comment: "",
+        }
+    }
 
     componentWillMount(){
         this.props.getPostDetails(this.props.selectedPostId)
@@ -19,7 +25,15 @@ class PostPage extends Component {
 
     componentDidMount() {
         this.props.getPostDetails(this.props.selectedPostId)
-        console.log(this.props.selectedPostId)
+    }
+
+    handleInputChange = ev => {
+        this.setState({ comment: ev.target.value });
+    }
+
+    createComment = () => {
+        this.props.createComment(this.props.selectedPostId, this.state.comment)
+        this.setState({ comment: "" })
     }
 
 
@@ -82,14 +96,14 @@ class PostPage extends Component {
                                     checkedIcon={<ArrowDownwardIcon color={this.props.selectedPost.userVoteDirection === -1 ? "secondary" : "primary"} />}
                                 />}
                         />
-                        <CountComment>{this.props.selectedPost.commentsNumber} Comentários</CountComment>
+                        <CountComment>{this.props.selectedPost.commentsNumber} comentário(s)</CountComment>
                     </BottonField>
                 </PostCard>
 
                 <PostCard>
-                    <TextAreaComment placeholder="Comentar..." rows="4" />
+                    <TextAreaComment placeholder="Comentar..." rows="4" value={this.state.comment} onChange={this.handleInputChange} />
                     <BottonField>
-                        <ButtonLight>Comentar</ButtonLight>
+                        <ButtonLight onClick={this.createComment}>Comentar</ButtonLight>
                     </BottonField>
                 </PostCard>
 
@@ -106,6 +120,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
     getPostDetails: postId => dispatch(getPostDetails(postId)),
     putVoteDirection: (postId, direction) => dispatch(putVoteDirection(postId, direction)),
+    createComment: (id, text) => dispatch(createComment(id, text)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostPage)

@@ -13,6 +13,12 @@ import { putVoteDirection } from '../../actions/vote'
 import { newPostForm } from "./newPostForm";
 
 class FeedPage extends Component {
+  constructor(props){
+  super(props)
+  this.state = {
+    form: {},
+  }
+}
   
   componentDidMount(){
     this.props.getPosts()
@@ -44,6 +50,7 @@ class FeedPage extends Component {
       this.props.putVoteDirection(id, 0)
       this.props.getPosts()
     }
+  }
 
   handleInputChange = ev => {
     const { name, value } = ev.target;
@@ -64,13 +71,12 @@ class FeedPage extends Component {
 
   }
 
-  render() {
 
-    return (
-      
+render(){
+    return (     
       <LightBackground>
         <Container>
-          <Box id="purple">
+        <Box id="purple">
             <form>
               {newPostForm.map(input => (
                 <div key={input.name}>
@@ -91,10 +97,9 @@ class FeedPage extends Component {
               <ButtonLight type="submit" onClick={this.createPost}>Publicar</ButtonLight>
             </form>
           </Box>
+
           {this.props.posts.map(post => {
             return (
-
-
               <PostContainer maxWidth="sm" key={post.id}>
                   <PostCard>
                       <UserNameBox>

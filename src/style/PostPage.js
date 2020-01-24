@@ -22,6 +22,7 @@ export const PostCard = styled(Card)({
     'margin-top': '25px',
     'border-radius': '25px',
     'background-color': '#F5EBE7',
+    'max-width': '536px',
 })
 
 export const UserNameBox = styled(Box)({

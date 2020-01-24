@@ -2,6 +2,8 @@ import axios from "axios";
 
 const baseUrl = "https://us-central1-missao-newton.cloudfunctions.net/fourEddit";
 
+
+
 const token = window.localStorage.getItem("token");
 
 export const signUp = (username, email, password) => async () => {

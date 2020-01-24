@@ -1,5 +1,9 @@
 import React, { Component } from 'react';
+import { connect } from "react-redux";
+import { push } from "connected-react-router";
+import { routes } from "../Router";
 import { PostContainer, PostCard, UserNameBox, UserName, Text, BottonField, CountVote, CountComment, ButtonLight, TextAreaComment } from '../../style/PostPage'
+import { getPostDetails } from "../../actions/lorenzo"
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
@@ -7,21 +11,26 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 
 class PostPage extends Component {
 
-    render(){
-        return(
+    componentDidMount() {
+        this.props.getPostDetails(this.props.selectedPostId)
+        console.log(this.props.selectedPostId)
+    }
+
+    render() {
+        return (
             <PostContainer maxWidth="sm">
                 <PostCard>
                     <UserNameBox>
-                        <UserName>Luan Bonetto</UserName>
-                        <Text>Because Joe Biden isn't going after giant corporations, he will keep the status quo and the Millionaires and billionaires who own things like Fox News, CNN and other major news organizations wont have to worry about paying their fair share of taxes if Joe Biden wins.</Text>
+                        <UserName>{this.props.selectedPost.username}</UserName>
+                        <Text>{this.props.selectedPost.text}</Text>
                     </UserNameBox>
                     <BottonField>
                         <FormControlLabel
-                            control={<Checkbox icon={<ArrowUpwardIcon color="default"/>} checkedIcon={<ArrowUpwardIcon color="secondary" />} value="checkedH" />}
+                            control={<Checkbox icon={<ArrowUpwardIcon color="default" />} checkedIcon={<ArrowUpwardIcon color="secondary" />} value="checkedH" />}
                         />
                         <CountVote>4343</CountVote>
                         <FormControlLabel
-                            control={<Checkbox icon={<ArrowDownwardIcon color="default"/>} checkedIcon={<ArrowDownwardIcon color="secondary" />} value="checkedH" />}
+                            control={<Checkbox icon={<ArrowDownwardIcon color="default" />} checkedIcon={<ArrowDownwardIcon color="secondary" />} value="checkedH" />}
                         />
                         <CountComment>0 Comentários</CountComment>
                     </BottonField>
@@ -34,25 +43,18 @@ class PostPage extends Component {
                     </BottonField>
                 </PostCard>
 
-                <PostCard>
-                    <UserNameBox>
-                        <UserName>Luan Bonetto</UserName>
-                        <Text>Because Joe Biden isn't going after giant corporations, he will keep the status quo and the Millionaires and billionaires who own things like Fox News, CNN and other major news organizations wont have to worry about paying their fair share of taxes if Joe Biden wins.</Text>
-                    </UserNameBox>
-                    <BottonField>
-                        <FormControlLabel
-                            control={<Checkbox icon={<ArrowUpwardIcon color="default"/>} checkedIcon={<ArrowUpwardIcon color="secondary" />} value="checkedH" />}
-                        />
-                        <CountVote>4343</CountVote>
-                        <FormControlLabel
-                            control={<Checkbox icon={<ArrowDownwardIcon color="default"/>} checkedIcon={<ArrowDownwardIcon color="secondary" />} value="checkedH" />}
-                        />
-                    </BottonField>
-                </PostCard>
-                
             </PostContainer>
         )
     }
 }
 
-export default PostPage
+const mapStateToProps = state => ({
+    selectedPostId: state.posts.selectedPostId,
+    selectedPost: state.posts.selectedPost
+})
+
+const mapDispatchToProps = dispatch => ({
+    getPostDetails: postId => dispatch(getPostDetails(postId))
+})
+
+export default connect(mapStateToProps, mapDispatchToProps)(PostPage)

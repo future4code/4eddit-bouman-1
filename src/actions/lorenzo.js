@@ -80,3 +80,16 @@ const setPostDetails = (postId) => ({
     postId
   }
 })
+
+export const createComment = (id, text) => async (dispatch) => {
+  try {
+    await axios.post(`${baseUrl}/posts/${id}/comment`, { text }, {
+      headers: {
+        auth: token
+      }
+    })
+    window.alert("Comentário criado com sucesso")
+  } catch {
+    window.alert("Erro ao comentar")
+  }
+}

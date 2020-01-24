@@ -12,7 +12,6 @@ export const routes = {
   signUp: "/signup",
   feed: "/feed",
   post: '/post',
-  // Outras rotas aqui
 };
 
 function Router(props) {
@@ -22,7 +21,7 @@ function Router(props) {
         <Route exact path={routes.login} component={LoginPage} />
         <Route exact path={routes.signUp} component={SignUpPage} />
         <PrivateRoute exact path={routes.feed} component={FeedPage} />
-        <Route exact path={routes.post} component={PostPage} />
+        <PrivateRoute exact path={routes.post} component={PostPage} />
       </Switch>
     </ConnectedRouter>
   );

@@ -8,12 +8,46 @@ import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import { putVoteDirection } from '../../actions/vote'
 
 class PostPage extends Component {
+
+    componentWillMount(){
+        this.props.getPostDetails(this.props.selectedPostId)
+        console.log(this.props.selectedPostId)
+    }
 
     componentDidMount() {
         this.props.getPostDetails(this.props.selectedPostId)
         console.log(this.props.selectedPostId)
+    }
+
+
+    putUpVote = (event) => {
+        const direction = event.target.value
+        const id = event.target.name
+
+        if (direction === "0") {
+            this.props.putVoteDirection(id, +1)
+            this.props.getPostDetails(this.props.selectedPostId)
+        } else {
+            this.props.putVoteDirection(id, 0)
+            this.props.getPostDetails(this.props.selectedPostId)
+        }
+
+    }
+
+    putDownVote = (event) => {
+        const direction = event.target.value
+        const id = event.target.name
+
+        if (direction !== '-1') {
+            this.props.putVoteDirection(id, -1)
+            this.props.getPostDetails(this.props.selectedPostId)
+        } else {
+            this.props.putVoteDirection(id, 0)
+            this.props.getPostDetails(this.props.selectedPostId)
+        }
     }
 
     render() {
@@ -26,13 +60,29 @@ class PostPage extends Component {
                     </UserNameBox>
                     <BottonField>
                         <FormControlLabel
-                            control={<Checkbox icon={<ArrowUpwardIcon color="default" />} checkedIcon={<ArrowUpwardIcon color="secondary" />} value="checkedH" />}
+                            control={
+                                <Checkbox
+                                    onClick={this.putUpVote}
+                                    name={this.props.selectedPost.id}
+                                    value={this.props.selectedPost.userVoteDirection}
+                                    icon={
+                                        <ArrowUpwardIcon color={this.props.selectedPost.userVoteDirection === 1 ? "secondary" : "primary"} />}
+                                    checkedIcon={
+                                        <ArrowUpwardIcon color={this.props.selectedPost.userVoteDirection === 1 ? "secondary" : "primary"} />}
+                                />}
                         />
-                        <CountVote>4343</CountVote>
+                        <CountVote>{this.props.selectedPost.votesCount}</CountVote>
                         <FormControlLabel
-                            control={<Checkbox icon={<ArrowDownwardIcon color="default" />} checkedIcon={<ArrowDownwardIcon color="secondary" />} value="checkedH" />}
+                            control={
+                                <Checkbox
+                                    onClick={this.putDownVote}
+                                    name={this.props.selectedPost.id}
+                                    value={this.props.selectedPost.userVoteDirection}
+                                    icon={<ArrowDownwardIcon color={this.props.selectedPost.userVoteDirection === -1 ? "secondary" : "primary"} />}
+                                    checkedIcon={<ArrowDownwardIcon color={this.props.selectedPost.userVoteDirection === -1 ? "secondary" : "primary"} />}
+                                />}
                         />
-                        <CountComment>0 Comentários</CountComment>
+                        <CountComment>{this.props.selectedPost.commentsNumber} Comentários</CountComment>
                     </BottonField>
                 </PostCard>
 
@@ -54,7 +104,8 @@ const mapStateToProps = state => ({
 })
 
 const mapDispatchToProps = dispatch => ({
-    getPostDetails: postId => dispatch(getPostDetails(postId))
+    getPostDetails: postId => dispatch(getPostDetails(postId)),
+    putVoteDirection: (postId, direction) => dispatch(putVoteDirection(postId, direction)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostPage)

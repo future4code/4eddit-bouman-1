@@ -25,6 +25,21 @@ export const PostCard = styled(Card)({
     'max-width': '536px',
 })
 
+export const PostCardHover = styled(Card)({
+  'margin-top': '25px',
+  'border-radius': '25px',
+  'background-color': '#F5EBE7',
+  'max-width': '536px',
+  '&:hover':{
+    'box-shadow': '0px 2px 1px -1px rgba(0,0,0,0.72), 0px 1px 1px 0px rgba(0,0,0,0.84), 0px 1px 3px 0px rgba(0,0,0,0.82)',
+    transition: '0.6s',
+  }
+})
+
+export const BorderHoverPost = style.div`
+
+`
+
 export const UserNameBox = styled(Box)({
     'padding-left': '25px',
     'padding-right': '25px',
@@ -40,6 +55,8 @@ export const UserName = style.h1`
 `
 
 export const Text = style.p`
+    max-width: 487px;
+    word-wrap: break-word;
     width: 487px;
     font-family: Muli;
     font-size: 18px;
@@ -85,4 +102,14 @@ export const TextAreaComment = style.textarea`
   background-color: #F5EBE7;
   font-family: Muli, sans-serif;
   font-size: 18px;
+`
+
+export const InputTitlePost = style.input`
+  width: 100%;
+  padding: 25px;
+  heigth: 300px;
+  border: none;
+  font-family: Muli, sans-serif;
+  font-size: 18px;
+  background-color: #F5EBE7;
 `

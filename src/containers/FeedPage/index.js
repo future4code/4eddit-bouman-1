@@ -2,13 +2,14 @@ import React, { Component } from "react";
 import { connect } from "react-redux";
 import { push } from "connected-react-router";
 import { routes } from "../Router";
-import { getPosts } from "../../actions/lorenzo"
-import { LightBackground, Container } from "../../style/lorenzo"
+import { createPost, getPosts, selectPostId } from "../../actions/lorenzo"
+import { LightBackground, Container, Box, Input, LightButton, Image } from "../../style/lorenzo"
 import { PostContainer, PostCard, UserNameBox, UserName, Text, BottonField, CountVote, CountComment, ButtonLight, TextAreaComment } from '../../style/PostPage'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
+import { newPostForm } from "./newPostForm";
 
 class FeedPage extends Component {
   state = {
@@ -16,41 +17,74 @@ class FeedPage extends Component {
   }
 
   componentDidMount() {
-    const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlphR1dLRWRjZXlaWjlORkxPUGgxIiwiZW1haWwiOiJwZWRyby5kYXJ2YXNAZ21haWwuY29tIiwidXNlcm5hbWUiOiJkYXJ2YXMiLCJpYXQiOjE1NzM1Nzk5MTd9.sKiIIRgiQm2qesnrNmFujNlXF02ytx-IvLKnNFHqXgA"
-    if (token === null) {
-      this.props.goToLoginPage()
-    } else {
-      this.props.getPosts()
-    }
-  } 
+    this.props.getPosts()
+  }
 
+  handleInputChange = ev => {
+    const { name, value } = ev.target;
+    this.setState({ form: { ...this.state.form, [name]: value } });
+  }
+
+  createPost = ev => {
+    ev.preventDefault();
+    const { text, title } = this.state.form
+    this.props.createPost(text, title)
+    this.setState({ form: {} })
+  }
+
+  goToPostPage = postId => {
+    const { selectPostId, goToSelectedPost } = this.props
+    selectPostId(postId)
+    goToSelectedPost()
+  }
 
   render() {
     return (
       <LightBackground>
         <Container>
+          <Box id="purple">
+            <form>
+              {newPostForm.map(input => (
+                <div key={input.name}>
+                  {input.label && <label htmlFor={input.name}>{input.label}: </label>}
+                  <Input
+                    id={input.name}
+                    name={input.name}
+                    placeholder={input.placeholder}
+                    type={input.type}
+                    value={this.state.form[input.name] || ""}
+                    required={input.required}
+                    pattern={input.pattern}
+                    title={input.errorMessage}
+                    onChange={this.handleInputChange}
+                  />
+                </div>
+              ))}
+              <ButtonLight type="submit" onClick={this.createPost}>Publicar</ButtonLight>
+            </form>
+          </Box>
           {this.props.posts.map(post => {
             return (
               <PostContainer maxWidth="sm">
-                  <PostCard>
-                      <UserNameBox>
-                          <UserName>{post.username}</UserName>
-                          <Text>{post.text}</Text>
-                      </UserNameBox>
-                      <BottonField>
-                          <FormControlLabel
-                              control={<Checkbox icon={<ArrowUpwardIcon color="default"/>} checkedIcon={<ArrowUpwardIcon color="secondary" />} value="checkedH" />}
-                          />
-                          <CountVote>4343</CountVote>
-                          <FormControlLabel
-                              control={<Checkbox icon={<ArrowDownwardIcon color="default"/>} checkedIcon={<ArrowDownwardIcon color="secondary" />} value="checkedH" />}
-                          />
-                          <CountComment>0 Comentários</CountComment>
-                      </BottonField>
-                  </PostCard>          
+                <PostCard>
+                  <UserNameBox onClick={() => this.goToPostPage(post.id)}>
+                    <UserName>{post.username}</UserName>
+                    <Text>{post.text}</Text>
+                  </UserNameBox>
+                  <BottonField>
+                    <FormControlLabel
+                      control={<Checkbox icon={<ArrowUpwardIcon color="default" />} checkedIcon={<ArrowUpwardIcon color="secondary" />} value="checkedH" />}
+                    />
+                    <CountVote>{post.votesCount}</CountVote>
+                    <FormControlLabel
+                      control={<Checkbox icon={<ArrowDownwardIcon color="default" />} checkedIcon={<ArrowDownwardIcon color="secondary" />} value="checkedH" />}
+                    />
+                    <CountComment>0 Comentários</CountComment>
+                  </BottonField>
+                </PostCard>
               </PostContainer>
-          
-          )
+
+            )
           })}
         </Container>
       </LightBackground>
@@ -64,8 +98,10 @@ const mapStateToProps = state => ({
 
 
 const mapDispatchToProps = dispatch => ({
-  goToLoginPage: () => dispatch(push(routes.root)),
   getPosts: () => dispatch(getPosts()),
+  createPost: (text, title) => dispatch(createPost(text, title)),
+  selectPostId: postId => dispatch(selectPostId(postId)),
+  goToSelectedPost: () => dispatch(push(routes.post)),
 })
 
-export default connect(mapStateToProps, mapDispatchToProps) (FeedPage)
+export default connect(mapStateToProps, mapDispatchToProps)(FeedPage)

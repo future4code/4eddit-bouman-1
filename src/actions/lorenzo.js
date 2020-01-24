@@ -1,42 +1,80 @@
 import axios from "axios";
-import { push } from "connected-react-router"
-import { routes } from "../containers/Router";
 
-const baseUrl = "https://us-central1-missao-newton.cloudfunctions.net/fourEddit"
+const baseUrl = "https://us-central1-missao-newton.cloudfunctions.net/fourEddit";
 
-const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IlphR1dLRWRjZXlaWjlORkxPUGgxIiwiZW1haWwiOiJwZWRyby5kYXJ2YXNAZ21haWwuY29tIiwidXNlcm5hbWUiOiJkYXJ2YXMiLCJpYXQiOjE1NzM1Nzk5MTd9.sKiIIRgiQm2qesnrNmFujNlXF02ytx-IvLKnNFHqXgA"
+const token = window.localStorage.getItem("token");
 
-export const getPosts = () => async(dispatch) => {
-  // const token = window.localStorage.getItem("token")
+export const signUp = (username, email, password) => async () => {
+  const signUpInfo = {
+    username,
+    email,
+    password
+  }
+  try {
+    await axios.post(`${baseUrl}/signup`, signUpInfo)
+    window.alert("Usuário criado com sucesso! Você será redirecionado ao feed.")
+  } catch (err) {
+    window.alert("Erro: ", err.message) // ???
+  }
+}
+
+export const getPosts = () => async (dispatch) => {
   try {
     const response = await axios.get(`${baseUrl}/posts`, {
       headers: {
         auth: token
       }
     })
-    dispatch(setPostsAction(response.data.posts))
+    dispatch(setPosts(response.data.posts))
   } catch {
     window.alert("Erro")
   }
 }
 
-const setPostsAction = (posts) => ({
-  type: "SET_POSTS_ACTION",
+const setPosts = (posts) => ({
+  type: "SET_POSTS",
   payload: {
-      posts,
+    posts
   }
-}) 
+})
 
-export const signUp = (username, email, password) => async () => {
-  const signUpInfo = {
-    username,
-    email,
-    password,
+export const selectPostId = postId => ({
+  type: "SELECT_POST_ID",
+  payload: {
+    postId
   }
+})
+
+export const createPost = (text, title) => async (dispatch) => {
   try {
-    axios.post(`${baseUrl}/signup`, signUpInfo)
-    window.alert("Usuário criado com sucesso! Você será redirecionado ao feed.")
+    await axios.post(`${baseUrl}/posts`, { text, title }, {
+      headers: {
+        auth: token
+      }
+    })
+    window.alert("Publicação criada com sucesso!")
+    dispatch(getPosts())
   } catch {
-    window.alert("Erro")
+    window.alert("Erro ao publicar")
   }
 }
+
+export const getPostDetails = postId => async (dispatch) => {
+  try {
+    const response = await axios.get(`${baseUrl}/posts/${postId}`, {
+      headers: {
+        auth: token
+      }
+    })
+    dispatch(setPostDetails(response.data.post));
+  } catch {
+    window.alert("Erro.")
+  }
+}
+
+const setPostDetails = (postId) => ({
+  type: "SET_POST_DETAILS",
+  payload: {
+    postId
+  }
+})

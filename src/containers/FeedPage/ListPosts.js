@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { getPosts } from "../../actions/lorenzo"
-import { PostContainer, PostCardHover, UserNameBox, Title, UserName, Text, BottonField, CountVote, CountComment, ButtonLight, TextAreaComment, InputTitlePost } from '../../style/PostPage'
+import { getPosts, selectPostId } from "../../actions/general"
+import { PostContainer, PostCardHover, UserNameBox, Title, UserName, Text, BottonField, CountVote, CountComment } from '../../style/PostPage'
+import { Central, Select } from "../../style/general"
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
@@ -9,7 +10,6 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { putVoteDirection } from '../../actions/vote'
 import { push } from "connected-react-router";
 import { routes } from "../Router";
-import { selectPostId } from "../../actions/lorenzo"
 
 class ListPosts extends Component {
     constructor(props) {
@@ -23,9 +23,9 @@ class ListPosts extends Component {
         this.props.getPosts()
     }
 
-    putUpVote = (event) => {
-        const direction = event.target.value
-        const id = event.target.name
+    putUpVote = (e) => {
+        const direction = e.target.value
+        const id = e.target.name
 
         if (direction === "0") {
             this.props.putVoteDirection(id, +1)
@@ -37,9 +37,9 @@ class ListPosts extends Component {
 
     }
 
-    putDownVote = (event) => {
-        const direction = event.target.value
-        const id = event.target.name
+    putDownVote = (e) => {
+        const direction = e.target.value
+        const id = e.target.name
 
         if (direction !== '-1') {
             this.props.putVoteDirection(id, -1)
@@ -58,6 +58,14 @@ class ListPosts extends Component {
 
     changeOrder = (e) => {
         this.setState({ order: e.target.value })
+    }
+
+    isntThePageLoaded = () => {
+        if (this.props.posts.length === 0) {
+            return true
+        } else {
+            return false
+        }
     }
 
     sortPosts = (itemA, itemB) => {
@@ -85,18 +93,20 @@ class ListPosts extends Component {
         const sortedPosts = this.props.posts.sort(this.sortPosts)
         return (
             <>
-                <select onChange={this.changeOrder}>
-                    <option>Ordenar por:</option>
-                    <option value='userAsc'>Usuário (crescente)</option>
-                    <option value='userDec'>Usuário (decrescente)</option>
-                    <option value='titleAsc'>Título (crescente)</option>
-                    <option value='titleDec'>Título (decrescente)</option>
-                    <option value='mostLiked'>Mais curtidos</option>
-                    <option value='lessLiked'>Menos curtidos</option>
-                    <option value='mostCommented'>Mais comentados</option>
-                    <option value='lessCommented'>Menos comentados</option>
-                </select>
-                {sortedPosts.map(post => {
+                <Central>
+                    <Select onChange={this.changeOrder}>
+                        <option>Ordenar por:</option>
+                        <option value='userAsc'>Usuário (crescente)</option>
+                        <option value='userDec'>Usuário (decrescente)</option>
+                        <option value='titleAsc'>Título (crescente)</option>
+                        <option value='titleDec'>Título (decrescente)</option>
+                        <option value='mostLiked'>Mais curtidos</option>
+                        <option value='lessLiked'>Menos curtidos</option>
+                        <option value='mostCommented'>Mais comentados</option>
+                        <option value='lessCommented'>Menos comentados</option>
+                    </Select>
+                </Central>
+                {this.isntThePageLoaded() ? <Central><Title>Carregando</Title><Text>Isso pode demorar muito...</Text></Central> : sortedPosts.map(post => {
                     return (
                         <PostContainer maxWidth="sm" key={post.id}>
                             <PostCardHover>

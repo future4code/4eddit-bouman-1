@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { LightBackground, Container } from "../../style/lorenzo"
+import { LightBackground, Container } from "../../style/general"
 import ListPosts from "./ListPosts"
 import FieldPost from "./FieldPost"
 

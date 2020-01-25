@@ -23,9 +23,9 @@ class LoginPage extends Component {
     }
   }
 
-  handleFieldChange = event => {
+  handleFieldChange = el => {
     this.setState({
-      [event.target.name]: event.target.value
+      [el.target.name]: el.target.value
     })
   }
 
@@ -47,7 +47,7 @@ class LoginPage extends Component {
           <Title>Login</Title>
           <InputText onChange={this.handleFieldChange} name="email" value={email} id="filled-basic" label="E-mail" type="email" variant="filled" margin="dense" />
           <InputPassword onChange={this.handleFieldChange} name="password" value={password} id="filled-password-input" label="Senha" type="password" variant="filled" autoComplete="current-password" margin="dense" />
-          <Link>Não sou cadastrado</Link>
+          <Link onClick={this.props.goToSignUpPage}>Não sou cadastrado</Link>
           <ButtonLight type="submit">Entrar</ButtonLight>
         </LoginArea>
         <ImageCapa src={PessoasImg} />
@@ -58,7 +58,8 @@ class LoginPage extends Component {
 
 const mapDispatchToProps = dispatch => ({
   login: (email, password) => dispatch(login(email, password)),
-  goToFeedPage: () => dispatch(push(routes.feed))
+  goToFeedPage: () => dispatch(push(routes.feed)),
+  goToSignUpPage: () => dispatch(push(routes.signUp)),
 })
 
 export default connect(null, mapDispatchToProps)(LoginPage)

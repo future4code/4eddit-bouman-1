@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
-import { createPost } from "../../actions/lorenzo"
+import { createPost } from "../../actions/general"
 import { PostContainer, PostCard, BottonField, ButtonLight, TextAreaComment } from '../../style/PostPage'
 
 
@@ -11,9 +11,9 @@ class FieldPost extends Component {
         titlePost: " ",
     }
 
-    handleInputChange = event => {
+    handleInputChange = e => {
         this.setState({
-            [event.target.name]: event.target.value
+            [e.target.name]: e.target.value
         })
     }
 
@@ -26,7 +26,6 @@ class FieldPost extends Component {
     }
 
     render() {
-        console.log(this.state.textPost)
         return (
             <>
                 <PostContainer maxWidth="sm">

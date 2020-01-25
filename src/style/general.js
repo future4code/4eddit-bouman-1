@@ -1,18 +1,22 @@
 import styled from 'styled-components';
 
+export const Background = styled.section`
+  background-color: #EC7F60;
+`
+
 export const LightBackground = styled.section`
   background-color: #FFD0BB;
-  height: 100%;
+  min-height: 100vh;
 `
 
 export const Container = styled.main`
   font-family: 'Muli', sans-serif;
   margin: auto;
   width: 80vw;
-  // height: 100vh;
   display: flex;
   flex-direction: column;
   &#signup {
+    height: 100vh;
     @media (min-width: 768px) {
       flex-direction: row;
     }
@@ -27,12 +31,17 @@ export const Box = styled.div`
   margin: 2vh 1vw;
   padding: 5vh 2vw;
   border-radius: 40px;
-  @media (min-width: 768px) {
-    width: 50%;
-  }
   &#purple {
     background-color: #2F2963;
     color: white;
+    @media (min-width: 768px) {
+      width: 40%;
+    }
+  }
+  &#image {
+    @media (min-width: 768px) {
+      width: 60%;
+    }
   }
 `
 
@@ -69,6 +78,7 @@ export const LightButton = styled.button`
 export const Image = styled.img`
   display: block;
   margin: 0 auto;
+  max-height: 40vh;
   max-width: 80%;
 `
 
@@ -102,4 +112,23 @@ export const ReactionBox = styled.div`
   padding: 0.01vh 1vw;
   border-bottom-left-radius: 20px;
   border-bottom-right-radius: 20px;
+`
+
+export const Central = styled.div`
+  margin: auto;
+  text-align: center;
+`
+
+export const Select = styled.select`
+  font-size: 18px;
+  margin: 4em 0 0;
+  width: 200px;
+  background-color: white;
+  cursor: pointer;
+  border: 1px solid white;
+  -moz-border-radius: 20px;
+	-webkit-border-radius: 20px;
+  border-radius: 20px;
+  outline: 0;
+  color: #2F2963;
 `

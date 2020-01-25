@@ -15,7 +15,7 @@ WebFont.load({
 });
 
 export const PostContainer = styled(Container)({
-    'margin-top': '25px',
+    'padding-top': '25px',
 })
 
 export const PostCard = styled(Card)({

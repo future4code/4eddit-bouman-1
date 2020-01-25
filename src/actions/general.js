@@ -2,10 +2,6 @@ import axios from "axios";
 
 const baseUrl = "https://us-central1-missao-newton.cloudfunctions.net/fourEddit";
 
-
-
-const token = window.localStorage.getItem("token");
-
 export const signUp = (username, email, password) => async () => {
   const signUpInfo = {
     username,
@@ -14,9 +10,9 @@ export const signUp = (username, email, password) => async () => {
   }
   try {
     await axios.post(`${baseUrl}/signup`, signUpInfo)
-    window.alert("Usuário criado com sucesso! Você será redirecionado ao feed.")
+    window.alert("Usuário criado com sucesso!")
   } catch (err) {
-    window.alert("Erro: ", err.message) // ???
+    window.alert("Erro ao criar conta")
   }
 }
 
@@ -24,12 +20,12 @@ export const getPosts = () => async (dispatch) => {
   try {
     const response = await axios.get(`${baseUrl}/posts`, {
       headers: {
-        auth: token
+        auth: window.localStorage.getItem("token")
       }
     })
     dispatch(setPosts(response.data.posts))
   } catch {
-    window.alert("Erro")
+    window.alert("Erro ao carregar os posts. Tente atualizar a página.")
   }
 }
 
@@ -51,13 +47,13 @@ export const createPost = (text, title) => async (dispatch) => {
   try {
     await axios.post(`${baseUrl}/posts`, { text, title }, {
       headers: {
-        auth: token
+        auth: window.localStorage.getItem("token")
       }
     })
     window.alert("Publicação criada com sucesso!")
     dispatch(getPosts())
   } catch {
-    window.alert("Erro ao publicar")
+    window.alert("Erro ao publicar.")
   }
 }
 
@@ -65,12 +61,12 @@ export const getPostDetails = postId => async (dispatch) => {
   try {
     const response = await axios.get(`${baseUrl}/posts/${postId}`, {
       headers: {
-        auth: token
+        auth: window.localStorage.getItem("token")
       }
     })
     dispatch(setPostDetails(response.data.post));
   } catch {
-    window.alert("Erro.")
+    window.alert("Erro ao carregar o post.")
   }
 }
 
@@ -85,11 +81,11 @@ export const createComment = (id, text) => async (dispatch) => {
   try {
     await axios.post(`${baseUrl}/posts/${id}/comment`, { text }, {
       headers: {
-        auth: token
+        auth: window.localStorage.getItem("token")
       }
     })
-    window.alert("Comentário criado com sucesso")
+    window.alert("Comentário criado com sucesso.")
   } catch {
-    window.alert("Erro ao comentar")
+    window.alert("Erro ao comentar.")
   }
 }

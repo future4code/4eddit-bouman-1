@@ -1,16 +1,16 @@
 import React, { Component } from "react";
-import { LightBackground, Container } from "../../style/lorenzo"
+import { LightBackground, Container } from "../../style/general"
 import ListPosts from "./ListPosts"
 import FieldPost from "./FieldPost"
 
 class FeedPage extends Component {
 
-render(){
+  render() {
     return (
       <LightBackground>
         <Container>
-          <FieldPost/>
-          <ListPosts/>
+          <FieldPost />
+          <ListPosts />
         </Container>
       </LightBackground>
     )

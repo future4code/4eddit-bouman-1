@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { push } from "connected-react-router";
-import { routes } from "../Router";
-import { PostContainer, PostCard, UserNameBox, UserName, Text, BottonField, CountVote, CountComment, ButtonLight, TextAreaComment } from '../../style/PostPage'
-import { getPostDetails, createComment } from "../../actions/lorenzo"
+import { PostContainer, PostCard, UserNameBox, Title, UserName, Text, BottonField, CountVote, CountComment, ButtonLight, TextAreaComment } from '../../style/PostPage'
+import { getPostDetails, createComment } from "../../actions/general"
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { putVoteDirection } from '../../actions/vote'
+import { LightBackground } from '../../style/general';
 
 class PostPage extends Component {
     constructor(props) {
@@ -18,7 +17,7 @@ class PostPage extends Component {
         }
     }
 
-    componentWillMount(){
+    componentWillMount() {
         this.props.getPostDetails(this.props.selectedPostId)
         console.log(this.props.selectedPostId)
     }
@@ -27,8 +26,8 @@ class PostPage extends Component {
         this.props.getPostDetails(this.props.selectedPostId)
     }
 
-    handleInputChange = ev => {
-        this.setState({ comment: ev.target.value });
+    handleInputChange = e => {
+        this.setState({ comment: e.target.value });
     }
 
     createComment = () => {
@@ -37,9 +36,9 @@ class PostPage extends Component {
     }
 
 
-    putUpVote = (event) => {
-        const direction = event.target.value
-        const id = event.target.name
+    putUpVote = (e) => {
+        const direction = e.target.value
+        const id = e.target.name
 
         if (direction === "0") {
             this.props.putVoteDirection(id, +1)
@@ -51,9 +50,9 @@ class PostPage extends Component {
 
     }
 
-    putDownVote = (event) => {
-        const direction = event.target.value
-        const id = event.target.name
+    putDownVote = (e) => {
+        const direction = e.target.value
+        const id = e.target.name
 
         if (direction !== '-1') {
             this.props.putVoteDirection(id, -1)
@@ -65,49 +64,63 @@ class PostPage extends Component {
     }
 
     render() {
+
+        const { selectedPost } = this.props
+
         return (
-            <PostContainer maxWidth="sm">
-                <PostCard>
-                    <UserNameBox>
-                        <UserName>{this.props.selectedPost.username}</UserName>
-                        <Text>{this.props.selectedPost.text}</Text>
-                    </UserNameBox>
-                    <BottonField>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    onClick={this.putUpVote}
-                                    name={this.props.selectedPost.id}
-                                    value={this.props.selectedPost.userVoteDirection}
-                                    icon={
-                                        <ArrowUpwardIcon color={this.props.selectedPost.userVoteDirection === 1 ? "secondary" : "primary"} />}
-                                    checkedIcon={
-                                        <ArrowUpwardIcon color={this.props.selectedPost.userVoteDirection === 1 ? "secondary" : "primary"} />}
-                                />}
-                        />
-                        <CountVote>{this.props.selectedPost.votesCount}</CountVote>
-                        <FormControlLabel
-                            control={
-                                <Checkbox
-                                    onClick={this.putDownVote}
-                                    name={this.props.selectedPost.id}
-                                    value={this.props.selectedPost.userVoteDirection}
-                                    icon={<ArrowDownwardIcon color={this.props.selectedPost.userVoteDirection === -1 ? "secondary" : "primary"} />}
-                                    checkedIcon={<ArrowDownwardIcon color={this.props.selectedPost.userVoteDirection === -1 ? "secondary" : "primary"} />}
-                                />}
-                        />
-                        <CountComment>{this.props.selectedPost.commentsNumber} comentário(s)</CountComment>
-                    </BottonField>
-                </PostCard>
+            <LightBackground>
+                <PostContainer maxWidth="sm">
+                    <PostCard>
+                        <UserNameBox>
+                            <Title>{selectedPost.title}</Title>
+                            <UserName>{selectedPost.username}</UserName>
+                            <Text>{selectedPost.text}</Text>
+                        </UserNameBox>
+                        <BottonField>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        onClick={this.putUpVote}
+                                        name={selectedPost.id}
+                                        value={selectedPost.userVoteDirection}
+                                        icon={
+                                            <ArrowUpwardIcon color={selectedPost.userVoteDirection === 1 ? "secondary" : "primary"} />}
+                                        checkedIcon={
+                                            <ArrowUpwardIcon color={selectedPost.userVoteDirection === 1 ? "secondary" : "primary"} />}
+                                    />}
+                            />
+                            <CountVote>{selectedPost.votesCount}</CountVote>
+                            <FormControlLabel
+                                control={
+                                    <Checkbox
+                                        onClick={this.putDownVote}
+                                        name={selectedPost.id}
+                                        value={selectedPost.userVoteDirection}
+                                        icon={<ArrowDownwardIcon color={selectedPost.userVoteDirection === -1 ? "secondary" : "primary"} />}
+                                        checkedIcon={<ArrowDownwardIcon color={selectedPost.userVoteDirection === -1 ? "secondary" : "primary"} />}
+                                    />}
+                            />
+                            <CountComment>{selectedPost.commentsNumber} comentário(s)</CountComment>
+                        </BottonField>
+                    </PostCard>
 
-                <PostCard>
-                    <TextAreaComment placeholder="Comentar..." rows="4" value={this.state.comment} onChange={this.handleInputChange} />
-                    <BottonField>
-                        <ButtonLight onClick={this.createComment}>Comentar</ButtonLight>
-                    </BottonField>
-                </PostCard>
+                    <PostCard>
+                        <TextAreaComment placeholder="Comentar..." rows="4" value={this.state.comment} onChange={this.handleInputChange} />
+                        <BottonField>
+                            <ButtonLight onClick={this.createComment}>Comentar</ButtonLight>
+                        </BottonField>
+                    </PostCard>
 
-            </PostContainer>
+                    {selectedPost.comments && selectedPost.comments.map(comment => (
+                        <PostCard>
+                            <UserNameBox>
+                                <UserName>{comment.username}</UserName>
+                                <Text>{comment.text}</Text>
+                            </UserNameBox>
+                        </PostCard>))}
+
+                </PostContainer>
+            </LightBackground>
         )
     }
 }

@@ -5,12 +5,12 @@ import FieldPost from "./FieldPost"
 
 class FeedPage extends Component {
 
-render(){
+  render() {
     return (
       <LightBackground>
         <Container>
-          <FieldPost/>
-          <ListPosts/>
+          <FieldPost />
+          <ListPosts />
         </Container>
       </LightBackground>
     )

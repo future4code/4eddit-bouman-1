@@ -1,8 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from "react-redux";
-import { push } from "connected-react-router";
-import { routes } from "../Router";
-import { PostContainer, PostCard, UserNameBox, UserName, Text, BottonField, CountVote, CountComment, ButtonLight, TextAreaComment } from '../../style/PostPage'
+import { PostContainer, PostCard, UserNameBox, Title, UserName, Text, BottonField, CountVote, CountComment, ButtonLight, TextAreaComment } from '../../style/PostPage'
 import { getPostDetails, createComment } from "../../actions/lorenzo"
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox';
@@ -69,6 +67,7 @@ class PostPage extends Component {
             <PostContainer maxWidth="sm">
                 <PostCard>
                     <UserNameBox>
+                        <Title>{this.props.selectedPost.title}</Title>
                         <UserName>{this.props.selectedPost.username}</UserName>
                         <Text>{this.props.selectedPost.text}</Text>
                     </UserNameBox>

@@ -4,13 +4,22 @@ import LogoImg from "../../img/logo-cortado.png"
 import PessoasImg from "../../img/pessoas.png"
 import { connect } from "react-redux";
 import { login } from "../../actions/login"
+import { push } from "connected-react-router";
+import { routes } from "../Router";
 
 class LoginPage extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       email: "",
       password: "",
+    }
+  }
+
+  componentDidMount() {
+    const token = window.localStorage.getItem("token")
+    if (token !== null) {
+      this.props.goToFeedPage()
     }
   }
 
@@ -20,15 +29,13 @@ class LoginPage extends Component {
     })
   }
 
-  handleSubmit = async(event) => {
+  handleSubmit = async (event) => {
     event.preventDefault()
-    
+
     const { email, password } = this.state
 
     await this.props.login(email, password)
   }
-
-  
 
   render() {
     const { email, password } = this.state
@@ -50,7 +57,8 @@ class LoginPage extends Component {
 }
 
 const mapDispatchToProps = dispatch => ({
-  login: (email, password) => dispatch(login(email,password)),
+  login: (email, password) => dispatch(login(email, password)),
+  goToFeedPage: () => dispatch(push(routes.feed))
 })
 
 export default connect(null, mapDispatchToProps)(LoginPage)

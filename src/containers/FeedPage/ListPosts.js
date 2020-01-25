@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { getPosts } from "../../actions/lorenzo"
-import { PostContainer, PostCardHover, UserNameBox, UserName, Text, BottonField, CountVote, CountComment, ButtonLight, TextAreaComment, InputTitlePost } from '../../style/PostPage'
+import { PostContainer, PostCardHover, UserNameBox, Title, UserName, Text, BottonField, CountVote, CountComment, ButtonLight, TextAreaComment, InputTitlePost } from '../../style/PostPage'
 import FormControlLabel from '@material-ui/core/FormControlLabel'
 import Checkbox from '@material-ui/core/Checkbox';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
@@ -12,6 +12,12 @@ import { routes } from "../Router";
 import { selectPostId } from "../../actions/lorenzo"
 
 class ListPosts extends Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            order: "",
+        }
+    }
 
     componentDidMount() {
         this.props.getPosts()
@@ -50,14 +56,52 @@ class ListPosts extends Component {
         goToSelectedPost()
     }
 
+    changeOrder = (e) => {
+        this.setState({ order: e.target.value })
+    }
+
+    sortPosts = (itemA, itemB) => {
+        switch (this.state.order) {
+            case 'userAsc':
+                return (itemA.username.toLowerCase() > itemB.username.toLowerCase()) ? 1 : ((itemB.username.toLowerCase() > itemA.username.toLowerCase()) ? -1 : 0);
+            case 'userDec':
+                return (itemB.username.toLowerCase() > itemA.username.toLowerCase()) ? 1 : ((itemA.username.toLowerCase() > itemB.username.toLowerCase()) ? -1 : 0);
+            case 'titleAsc':
+                return (itemA.title > itemB.title) ? 1 : ((itemB.title > itemA.title) ? -1 : 0);
+            case 'titleDec':
+                return (itemB.title > itemA.title) ? 1 : ((itemA.title > itemB.title) ? -1 : 0);
+            case 'mostLiked':
+                return itemB.votesCount - itemA.votesCount;
+            case 'lessLiked':
+                return itemA.votesCount - itemB.votesCount;
+            case 'mostCommented':
+                return itemB.commentsNumber - itemA.commentsNumber;
+            case 'lessCommented':
+                return itemA.commentsNumber - itemB.commentsNumber;
+        }
+    }
+
     render() {
+        const sortedPosts = this.props.posts.sort(this.sortPosts)
         return (
             <>
-                {this.props.posts.map(post => {
+                <select onChange={this.changeOrder}>
+                    <option>Ordenar por:</option>
+                    <option value='userAsc'>Usuário (crescente)</option>
+                    <option value='userDec'>Usuário (decrescente)</option>
+                    <option value='titleAsc'>Título (crescente)</option>
+                    <option value='titleDec'>Título (decrescente)</option>
+                    <option value='mostLiked'>Mais curtidos</option>
+                    <option value='lessLiked'>Menos curtidos</option>
+                    <option value='mostCommented'>Mais comentados</option>
+                    <option value='lessCommented'>Menos comentados</option>
+                </select>
+                {sortedPosts.map(post => {
                     return (
                         <PostContainer maxWidth="sm" key={post.id}>
-                            <PostCardHover onClick={() => { this.goToPostPage(post.id) }} >
-                                <UserNameBox>
+                            <PostCardHover>
+                                <UserNameBox onClick={() => { this.goToPostPage(post.id) }}>
+                                    <Title>{post.title}</Title>
                                     <UserName>{post.username}</UserName>
                                     <Text>{post.text}</Text>
                                 </UserNameBox>
@@ -85,7 +129,7 @@ class ListPosts extends Component {
                                                 checkedIcon={<ArrowDownwardIcon color={post.userVoteDirection === -1 ? "secondary" : "primary"} />}
                                             />}
                                     />
-                                    <CountComment>{post.commentsNumber} Comentários</CountComment>
+                                    <CountComment onClick={() => { this.goToPostPage(post.id) }}>{post.commentsNumber} comentário(s)</CountComment>
                                 </BottonField>
                             </PostCardHover>
 

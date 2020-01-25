@@ -2,6 +2,7 @@ import styled from 'styled-components';
 
 export const LightBackground = styled.section`
   background-color: #FFD0BB;
+  height: 100%;
 `
 
 export const Container = styled.main`
@@ -90,10 +91,6 @@ export const Title = styled.span`
   color: #2F2963;
   font-weight: bold;
   font-size: 22px;
-`
-
-export const Text = styled.span`
-
 `
 
 export const ReactionBox = styled.div`

@@ -44,14 +44,25 @@ export const UserNameBox = styled(Box)({
     'padding-left': '25px',
     'padding-right': '25px',
     'width': '487px',
+    'cursor': 'pointer',
 })
 
-export const UserName = style.h1`
+export const Title = style.h1`
     font-size: 28px;
     margin: 0;
-    padding: 0;
+    padding: 18px 0 0;
     font-family: Muli;
     color: #2F2963;
+`
+
+export const UserName = style.p`
+    max-width: 487px;
+    word-wrap: break-word;
+    width: 487px;
+    font-family: Muli;
+    font-size: 18px;
+    font-weight: bold;
+    margin-block-start: 0;
 `
 
 export const Text = style.p`
@@ -60,7 +71,10 @@ export const Text = style.p`
     width: 487px;
     font-family: Muli;
     font-size: 18px;
+    margin-block-end: 0;
+    padding: 0 0 1em;
 `
+
 export const BottonField = styled(Box)({
     display: 'grid',
     'grid-template-columns': 'repeat(15, 1fr)',
@@ -83,6 +97,7 @@ export const CountComment = style.p`
     margin-left: -23px;
     grid-column-start: 12;
     grid-column-end: 16;
+    cursor: pointer;
 `
 
 export const ButtonLight = styled(Button)({

@@ -9,6 +9,7 @@ export const login = (email, password) => async (dispatch) => {
         await axios.post( `${baseUrl}login`, { email, password })
         const response = await axios.post(`${baseUrl}login`, { email, password })
         window.localStorage.setItem("token", response.data.token)
+        window.localStorage.setItem("username", response.data.user.username)
         dispatch(push(routes.feed))
     }catch(error){
         console.log(error)

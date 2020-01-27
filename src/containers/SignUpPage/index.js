@@ -52,7 +52,7 @@ class SignUpPage extends Component {
             <Link onClick={this.props.goToLoginPage}>Eu já tenho uma conta</Link>
           </Box>
           <Box id="image">
-            <Image src={require("../../img/logo-cortado.png")} alt="4eddit" />
+            <Image src={require("../../img/logocortado.png")} alt="4eddit" />
             <Image src={require("../../img/entrar.png")} alt="Cadastre-se!" />
           </Box>
         </Container>

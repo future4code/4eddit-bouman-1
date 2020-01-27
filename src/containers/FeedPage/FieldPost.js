@@ -26,11 +26,14 @@ class FieldPost extends Component {
     }
 
     render() {
+
+        const userName = window.localStorage.getItem("username")
+
         return (
             <>
                 <PostContainer maxWidth="sm">
                     <PostCard>
-                        <TextAreaComment onChange={this.handleInputChange} name="textPost" value={this.state.textPost} placeholder="O que você tem para postar hoje?" rows="4" />
+                        <TextAreaComment onChange={this.handleInputChange} name="textPost" value={this.state.textPost} placeholder={`Olá, ${userName}. O que você tem para postar hoje?`} rows="4" />
                         <BottonField>
                             <ButtonLight type="submit" onSubmit={this.createPost}>Postar</ButtonLight>
                         </BottonField>

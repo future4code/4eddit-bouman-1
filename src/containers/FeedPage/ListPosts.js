@@ -10,6 +10,7 @@ import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { putVoteDirection } from '../../actions/vote'
 import { push } from "connected-react-router";
 import { routes } from "../Router";
+import { Loading } from './Loading'
 
 class ListPosts extends Component {
     constructor(props) {
@@ -24,24 +25,30 @@ class ListPosts extends Component {
     }
 
     putUpVote = (e) => {
-        const direction = e.target.value
+        const direction = parseInt(e.target.value)
         const id = e.target.name
 
-        if (direction === "0") {
+        console.log(direction)
+
+
+        if (direction === 0) {
             this.props.putVoteDirection(id, +1)
             this.props.getPosts()
-        } else {
+        } else if (direction === 1) {
             this.props.putVoteDirection(id, 0)
+            this.props.getPosts()
+        } else{
+            this.props.putVoteDirection(id, +1)
             this.props.getPosts()
         }
 
     }
 
     putDownVote = (e) => {
-        const direction = e.target.value
+        const direction = parseInt(e.target.value)
         const id = e.target.name
 
-        if (direction !== '-1') {
+        if (direction !== -1) {
             this.props.putVoteDirection(id, -1)
             this.props.getPosts()
         } else {
@@ -106,7 +113,7 @@ class ListPosts extends Component {
                         <option value='lessCommented'>Menos comentados</option>
                     </Select>
                 </Central>
-                {this.isntThePageLoaded() ? <Central><Title>Carregando</Title><Text>Isso pode demorar muito...</Text></Central> : sortedPosts.map(post => {
+                {this.isntThePageLoaded() ? <Central><Title>Carregando</Title><Text>Isso pode demorar muito...</Text> <Loading /></Central> : sortedPosts.map(post => {
                     return (
                         <PostContainer maxWidth="sm" key={post.id}>
                             <PostCardHover>

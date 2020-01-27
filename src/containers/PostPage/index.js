@@ -8,6 +8,10 @@ import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ArrowDownwardIcon from '@material-ui/icons/ArrowDownward';
 import { putVoteDirection } from '../../actions/vote'
 import { LightBackground } from '../../style/general';
+import { NavBar, LogoNavBar, LogoutButton } from "../../style/navbar"
+import logocortado from "../../img/logocortado.png"
+import { push } from "connected-react-router";
+import { routes } from "../Router";
 
 class PostPage extends Component {
     constructor(props) {
@@ -15,11 +19,6 @@ class PostPage extends Component {
         this.state = {
             comment: "",
         }
-    }
-
-    componentWillMount() {
-        this.props.getPostDetails(this.props.selectedPostId)
-        console.log(this.props.selectedPostId)
     }
 
     componentDidMount() {
@@ -37,30 +36,38 @@ class PostPage extends Component {
 
 
     putUpVote = (e) => {
-        const direction = e.target.value
+        const direction = parseInt(e.target.value)
         const id = e.target.name
 
-        if (direction === "0") {
+        if (direction === 0) {
             this.props.putVoteDirection(id, +1)
             this.props.getPostDetails(this.props.selectedPostId)
-        } else {
+        } else if (direction === 1) {
             this.props.putVoteDirection(id, 0)
             this.props.getPostDetails(this.props.selectedPostId)
+        }else {
+            this.props.putVoteDirection(id, +1)
+            this.props.getPostDetails(this.props.selectedPostId)
         }
-
     }
 
     putDownVote = (e) => {
-        const direction = e.target.value
+        const direction = parseInt(e.target.value)
         const id = e.target.name
-
-        if (direction !== '-1') {
+        
+        if (direction !== -1) {
             this.props.putVoteDirection(id, -1)
             this.props.getPostDetails(this.props.selectedPostId)
         } else {
             this.props.putVoteDirection(id, 0)
             this.props.getPostDetails(this.props.selectedPostId)
         }
+        
+    }
+
+    signOut = () => {
+        window.localStorage.removeItem("token")
+        this.props.reloadPage()
     }
 
     render() {
@@ -69,6 +76,11 @@ class PostPage extends Component {
 
         return (
             <LightBackground>
+                <NavBar>
+                    <LogoNavBar src={logocortado} onClick={this.props.goToFeedPage} />
+                    <LogoutButton onClick={this.signOut}>Sair</LogoutButton>
+                </NavBar>
+
                 <PostContainer maxWidth="sm">
                     <PostCard>
                         <UserNameBox>
@@ -134,6 +146,8 @@ const mapDispatchToProps = dispatch => ({
     getPostDetails: postId => dispatch(getPostDetails(postId)),
     putVoteDirection: (postId, direction) => dispatch(putVoteDirection(postId, direction)),
     createComment: (id, text) => dispatch(createComment(id, text)),
+    goToFeedPage: () => dispatch(push(routes.feed)),
+    reloadPage: () => dispatch(push(routes.login)),
 })
 
 export default connect(mapStateToProps, mapDispatchToProps)(PostPage)

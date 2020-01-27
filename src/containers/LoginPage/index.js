@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { BackgroundColor, ImageCapa, LoginArea, Title, InputText, InputPassword, Link, ButtonLight } from "../../style/LoginPage"
-import LogoImg from "../../img/logo-cortado.png"
+import LogoImg from "../../img/logocortado.png"
 import PessoasImg from "../../img/pessoas.png"
 import { connect } from "react-redux";
 import { login } from "../../actions/login"

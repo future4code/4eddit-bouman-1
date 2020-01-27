@@ -30,19 +30,6 @@ export const ImageCapa = style.img`
   align-self: center;
 `
 
-// export const LoginArea = styled(Card)({
-//   display: 'grid',
-//   'grid-template-columns': '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr',
-//   'grid-template-rows' : '1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr',
-//   background: '#2F2963',
-//   'border-radius': '25px',
-//   width: '440px',
-//   height: '371px',
-//   'grid-row': 'span 2',
-//   'font-family': 'Muli, sans-serif'
-
-// })
-
 export const LoginArea = style.form`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -52,7 +39,8 @@ export const LoginArea = style.form`
   width: 440px;
   height: 371px;
   grid-row: span 2;
-  font-family: Muli, sans-serif;`
+  font-family: Muli, sans-serif;
+  `
 
 
 
